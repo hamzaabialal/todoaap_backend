@@ -24,16 +24,16 @@ class Custom404ExceptionMiddleware:
         # return JsonResponse(message, status=500)
 
         if response.status_code == 404:
-            return JsonResponse({"error":"Sorry, the page was not found."}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"error": "Sorry, the page was not found."}, status=404)
         return response
 
     def process_exception(self, request, exception):
         if exception:
             message = "Sorry, the page was not found."
-            return JsonResponse(message, status=404)
+            return JsonResponse({"error": "Sorry, the page was not found."}, status=404)
 
         message = "An unexpected error occurred."
-        return JsonResponse(message, status=500)
+        return JsonResponse({"error": "Sorry, the page was not found."}, status=404)
 
 
 class MyTemplateMiddleware:
