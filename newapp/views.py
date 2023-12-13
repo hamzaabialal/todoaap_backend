@@ -46,11 +46,15 @@ class Test(TemplateView):
 
 
 class FilterCompleteToDoList(ListCreateAPIView):
-    queryset = ToDoModel.objects.filter(completed=True)
     serializer_class = ToDoSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def get_queryset(self):
+        return ToDoModel.objects.filter(completed=True)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return self.get_paginated_response(serializer.data)
 
 
 class FilterIncompleteToDoList(ListCreateAPIView):
